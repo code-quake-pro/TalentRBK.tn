@@ -1,5 +1,5 @@
 import { UserDto, LoginDto } from './dto';
-import { Controller, Get, Post, Body, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 
@@ -24,5 +24,10 @@ export class UserController {
     this.userService.login(body).then((result) => {
       res.send(result);
     });
+  }
+
+  @Get('/')
+  getAll() {
+    return this.userService.getAll();
   }
 }

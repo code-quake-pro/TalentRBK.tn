@@ -40,4 +40,10 @@ export class UserService {
     }
     return { message: 'password is not valid', exists: true };
   }
+
+  async getAll() {
+    let users = await this.userModel.find({}, { password: false });
+
+    return users;
+  }
 }
