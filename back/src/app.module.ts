@@ -15,9 +15,6 @@ require('dotenv').config();
   imports: [
     MongooseModule.forRoot(process.env.DB_URI),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, 'front/build'),
-    }),
   ],
 })
 export class AppModule {}
