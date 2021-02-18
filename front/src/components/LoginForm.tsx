@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { login, selectUser } from "../store";
+import $ from "jquery";
 
 function LoginForm() {
   const [email, setEmail] = useState(null);
@@ -37,39 +38,60 @@ function LoginForm() {
     });
   };
 
+  useEffect(() => {
+    $("#form").on("submit", function (e) {
+      e.preventDefault();
+    });
+  });
+
   return (
     <div
       style={{
-        border: "1px solid gray",
+        border: "1px solid #ccc",
         width: "33%",
-        height: "33%",
+        // minWidth: "300px",
         position: "absolute",
         top: "50%",
         left: "50%",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        padding: "50px"
-      }}>
-      <label htmlFor="email">Email</label>
-      <br />
-      <input
-        type="text"
-        name="email"
-        onChange={(e: any) => setEmail(e.target.value)}
-      />
-      <br />
-      <label htmlFor="password">Password</label>
-      <br />
-      <input
-        type="password"
-        name="password"
-        onChange={(e: any) => setPassword(e.target.value)}
-      />
-      <br />
-      <button disabled={isLoading} onClick={submit}>
+        padding: "50px",
+        fontSize: "20px"
+      }}
+      className="h-auto grid-rows-1 shadow-xl min-w-5">
+      <h2
+        style={{ textAlign: "center", marginBottom: "30px" }}
+        className="text-4xl ">
         Login
-      </button>
-      <p style={{ color: "red" }}>{error}</p>
+      </h2>
+      <form id="form" onSubmit={submit}>
+        <label htmlFor="email">Email</label>
+        <br />
+        <input
+          className="input"
+          type="text"
+          name="email"
+          onChange={(e: any) => setEmail(e.target.value)}
+        />
+        <br />
+        <label htmlFor="password">Password</label>
+        <br />
+        <input
+          className="input"
+          type="password"
+          name="password"
+          onChange={(e: any) => setPassword(e.target.value)}
+        />
+        <br />
+        <button
+          className="submit"
+          type="submit"
+          disabled={isLoading}
+          onClick={submit}>
+          Login
+        </button>
+      </form>
+      <p style={{ color: "red", textAlign: "center" }}>{error}</p>
     </div>
   );
 }
