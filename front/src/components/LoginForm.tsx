@@ -37,79 +37,41 @@ function LoginForm() {
     });
   };
 
-  if (!error) {
-    return (
-      <div
-        style={{
-          border: "1px solid gray",
-          width: "33%",
-          height: "33%",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)",
-          padding: "50px"
-        }}>
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="text"
-          name="email"
-          onChange={(e: any) => setEmail(e.target.value)}
-        />
-        <br />
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          type="password"
-          name="password"
-          onChange={(e: any) => setPassword(e.target.value)}
-        />
-        <br />
-        <button disabled={isLoading} onClick={submit}>
-          Login
-        </button>
-        {/* <h2>{currentUser.username}</h2> */}
-      </div>
-    );
-  } else {
-    return (
-      <div
-        style={{
-          border: "1px solid gray",
-          width: "33%",
-          height: "33%",
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)",
-          padding: "50px"
-        }}>
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          type="text"
-          name="email"
-          onChange={(e: any) => setEmail(e.target.value)}
-        />
-        <br />
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          type="password"
-          name="password"
-          onChange={(e: any) => setPassword(e.target.value)}
-        />
-        <br />
-        <button disabled={isLoading} onClick={submit}>
-          Login
-        </button>
-        <p style={{ color: "red" }}>{error}</p>
-      </div>
-    );
-  }
+  return (
+    <div
+      style={{
+        border: "1px solid gray",
+        width: "33%",
+        height: "33%",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        padding: "50px"
+      }}>
+      <label htmlFor="email">Email</label>
+      <br />
+      <input
+        type="text"
+        name="email"
+        onChange={(e: any) => setEmail(e.target.value)}
+      />
+      <br />
+      <label htmlFor="password">Password</label>
+      <br />
+      <input
+        type="password"
+        name="password"
+        onChange={(e: any) => setPassword(e.target.value)}
+      />
+      <br />
+      <button disabled={isLoading} onClick={submit}>
+        Login
+      </button>
+      <p style={{ color: "red" }}>{error}</p>
+    </div>
+  );
 }
 
 export default connect()(LoginForm);
