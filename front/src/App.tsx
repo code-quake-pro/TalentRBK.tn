@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import axios from "axios";
 import LoginForm from "./components/LoginForm";
+import Home from "./components/home";
+import { Provider } from "react-redux";
+import store from "./store";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
-  const [clicks, setClicks] = useState(0);
   const [data, setData] = useState([]);
 
   return (
-    <div className="App">
-      <LoginForm />
-    </div>
+    <Router>
+      <Provider store={store}>
+        <div className="App">
+          <Switch>
+            <Route path="/" exact component={LoginForm} />
+            <Route path="/home" component={Home} />
+          </Switch>
+        </div>
+      </Provider>
+    </Router>
   );
 }
 
