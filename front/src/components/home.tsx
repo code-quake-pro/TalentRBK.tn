@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectUser } from "../store";
+import { selectUser } from "../reducers/user";
 
 export default function Home() {
   const currentUser = useSelector(selectUser);
