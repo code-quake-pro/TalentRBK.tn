@@ -1,9 +1,9 @@
-import { current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { login, selectUser } from "../store";
+import { login, selectUser } from "../reducers/user";
+import { useHistory } from "react-router-dom";
 import $ from "jquery";
 
 function LoginForm() {
@@ -11,9 +11,11 @@ function LoginForm() {
   const [password, setPassword] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectUser);
+  const history = useHistory();
+
   var submit = () => {
     if (!email || !password) return setError("Fill in the fields");
     setLoading(true);
@@ -27,6 +29,7 @@ function LoginForm() {
         dispatch(
           login({ email: user.email, username: user.username, isLogged: true })
         );
+        history.push("/home");
       } else {
         if (res.data.exists) {
           setError("Wrong password");
@@ -42,6 +45,12 @@ function LoginForm() {
     $("#form").on("submit", function (e) {
       e.preventDefault();
     });
+
+    return () => {
+      $("#form").on("submit", function (e) {
+        e.preventDefault();
+      });
+    };
   });
 
   return (
@@ -49,7 +58,7 @@ function LoginForm() {
       style={{
         border: "1px solid #ccc",
         width: "33%",
-        // minWidth: "300px",
+        minWidth: "300px",
         position: "absolute",
         top: "50%",
         left: "50%",
@@ -58,7 +67,7 @@ function LoginForm() {
         padding: "50px",
         fontSize: "20px"
       }}
-      className="h-auto grid-rows-1 shadow-xl min-w-5">
+      className="h-auto grid-rows-1 shadow-xl">
       <h2
         style={{ textAlign: "center", marginBottom: "30px" }}
         className="text-4xl ">
