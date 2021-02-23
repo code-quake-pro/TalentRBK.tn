@@ -37,4 +37,11 @@ export class UserService {
 
     return users;
   }
+
+  async registerPass(id, pass) {
+    let promise = await this.userModel.findByIdAndUpdate(id, {
+      password: pass,
+    });
+    return promise;
+  }
 }
