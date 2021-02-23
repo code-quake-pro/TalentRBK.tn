@@ -27,7 +27,11 @@ function LoginForm() {
       let user = res.data.user;
       if (user) {
         dispatch(
-          login({ email: user.email, username: user.username, isLogged: true })
+          login({
+            email: user.email,
+            role: user.role,
+            isLogged: true
+          })
         );
         history.push("/home");
       } else {

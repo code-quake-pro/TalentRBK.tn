@@ -5,6 +5,7 @@ import Home from "./components/home";
 import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import AccountForm from "./components/AccountForm";
 
 function App() {
   const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={LoginForm} />
             <Route path="/home" component={Home} />
+            <Route path="/companies/add" component={AccountForm} />
           </Switch>
         </div>
       </Provider>

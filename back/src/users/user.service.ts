@@ -10,17 +10,8 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(createUser: UserDto) {
-    const saltRounds = 10;
-    var obj = createUser;
-
-    let salt = await bcrypt.genSalt(saltRounds);
-
-    let hashed = await bcrypt.hash(obj.password, salt);
-
-    obj.password = hashed;
-    const user = new this.userModel(obj);
+    const user = new this.userModel(createUser);
     let promise = await user.save();
-
     return promise;
   }
 
@@ -36,7 +27,7 @@ export class UserService {
     let isValid = await bcrypt.compare(attempt.password, user.password);
 
     if (isValid) {
-      return { user: { username: user.username, email: user.email } };
+      return { user: { role: user.role, email: user.email } };
     }
     return { message: 'password is not valid', exists: true };
   }
