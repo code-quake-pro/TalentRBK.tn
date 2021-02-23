@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './users/userModel';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { JwtModule } from '@nestjs/jwt';
 require('dotenv').config();
 
 @Module({
@@ -15,6 +15,10 @@ require('dotenv').config();
   imports: [
     MongooseModule.forRoot(process.env.DB_URI),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    JwtModule.register({
+      secret: process.env.SECRET,
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
 })
 export class AppModule {}
