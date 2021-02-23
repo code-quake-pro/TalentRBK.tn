@@ -1,5 +1,6 @@
+import { JwtService } from '@nestjs/jwt';
 import { UserDto, LoginDto } from './dto';
-import { Controller, Get, Post, Body, Res, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Put, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import * as bcrypt from 'bcrypt';
@@ -7,20 +8,14 @@ require('dotenv').config();
 
 @Controller('/api/user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('/new')
   async create(@Body() body: UserDto, @Res() res: Response) {
-    const generator = require('generate-password');
     const nodemailer = require('nodemailer');
-    const saltRounds = 10;
-    var obj = body;
-    let salt = await bcrypt.genSalt(saltRounds);
-
-    var password = generator.generate({
-      length: 10,
-      numbers: true,
-    });
 
     let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -29,28 +24,52 @@ export class UserController {
         pass: process.env.EMAIL,
       },
     });
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-      from: 'rbktalents.tn@gmail.com', // sender address
-      to: obj.email, // list of receivers
-      subject: 'Hello, This is your account', // Subject line
-      text: `email: ${obj.email}, password: ${password}`, // plain text body
-    });
-
-    console.log(info);
-
-    let hashed = await bcrypt.hash(password, salt);
-    obj['password'] = hashed;
-    obj['role'] = 'company';
     this.userService
-      .create(obj)
-      .then(() => {
-        res.send({ saved: true });
+      .create(body)
+      .then((user) => {
+        const token = this.jwtService.sign({
+          user_id: user.id,
+        });
+
+        transporter.sendMail({
+          from: 'rbktalents.tn@gmail.com', // sender address
+          to: body.email, // list of receivers
+          subject: 'Hello, Please register your account', // Subject line
+          html: `click on this <a href="http://localhost:3001/api/user/confirmation/${token}">link</a>`,
+        });
       })
       .catch((err) => {
         res.send({ message: err, saved: false });
       });
+  }
+
+  @Get('/confirmation/:token')
+  redirectUser(@Param() params, @Res() res: Response) {
+    try {
+      const { user_id } = this.jwtService.verify(params.token);
+
+      res.redirect('http://localhost:3000/register/' + user_id);
+    } catch {
+      res.send('access denied');
+    }
+  }
+
+  @Put('/register/:id')
+  async registerUser(
+    @Param() params,
+    @Body() body: { password: string },
+    @Res() res: Response,
+  ) {
+    const salt = await bcrypt.genSalt(10);
+
+    const hashedPass = await bcrypt.hash(body.password, salt);
+
+    this.userService
+      .registerPass(params.id, hashedPass)
+      .then((user) => {
+        res.send({ saved: true });
+      })
+      .catch((err) => res.send({ error: err, saved: false }));
   }
 
   @Post('/login')
