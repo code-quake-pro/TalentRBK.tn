@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function AccountForm() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
 
   var submit = () => {
     axios
-      .post("http://localhost:3001/api/user/new", {
-        email: email
+      .post('/api/user/new', {
+        email: email,
       })
       .then((res) => {
         console.log(res);
@@ -16,13 +16,13 @@ function AccountForm() {
 
   return (
     <div>
-      <label htmlFor="email">Email</label>
+      <label htmlFor='email'>Email</label>
       <input
-        type="email"
-        name="email"
+        type='email'
+        name='email'
         onChange={(e) => setEmail(e.target.value)}
       />
-      <button type="submit" onClick={() => submit()}>
+      <button type='submit' onClick={() => submit()}>
         Create
       </button>
     </div>
