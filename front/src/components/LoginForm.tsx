@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { login, selectUser } from "../reducers/user";
+import { login, selectUser } from "../slices/user";
 import { useHistory } from "react-router-dom";
 import $ from "jquery";
 
