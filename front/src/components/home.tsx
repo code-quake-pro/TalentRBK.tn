@@ -17,11 +17,9 @@ export default function Home() {
   let upload = (file: any) => {
     const formData = new FormData();
     formData.append('file', file[0]);
-    axios
-      .post('http://localhost:3001/api/file/new', formData)
-      .then((res: any) => {
-        setFiles((arr: any) => [...arr, res.data]);
-      });
+    axios.post('/api/file/new', formData).then((res: any) => {
+      setFiles((arr: any) => [...arr, res.data]);
+    });
   };
 
   let displayFiles = () => {
@@ -30,7 +28,7 @@ export default function Home() {
         return (
           <iframe
             key={i}
-            src={'http://localhost:3001/' + file.path}
+            src={'/' + file.path}
             width='300px'
             height='450px'
           ></iframe>
@@ -40,7 +38,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/file').then((res: any) => {
+    axios.get('/api/file').then((res: any) => {
       setFiles(res.data);
       console.log(res.data);
     });
