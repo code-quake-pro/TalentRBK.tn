@@ -1,2 +1,0 @@
-base = "back/"
-ignore = "git diff --quiet HEAD^ HEAD sub_dir/"

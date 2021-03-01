@@ -1,2 +1,0 @@
-# TalentRBK.tn
-management app
